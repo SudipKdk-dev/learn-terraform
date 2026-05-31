@@ -1,9 +1,9 @@
 resource "aws_key_pair" "my_key" {
-  key_name   = "deployer-key"
+  key_name   = "terra-key"
   public_key = file("terra-key.pub")
 }  
 
-resource "aws_default_vpc" "default" {
+resource "aws_default_vpc" "default" {  
   tags = {
     Name = "Default VPC"
   }
@@ -44,12 +44,12 @@ resource "aws_security_group" "my-security-group" {
 }
 resource "aws_instance" "my_instance1" {
   key_name=aws_key_pair.my_key.key_name
-  instance_type="t3.micro"
+  instance_type=var.ec2-instance-type
   vpc_security_group_ids=[aws_security_group.my-security-group.id]
-  ami="ami-091138d0f0d41ff90"
+  ami=var.ec2-ami-id
 
   root_block_device{
-    volume_size=8
+    volume_size = var.ec2-rootstorage-size
     volume_type="gp3"
   }
   tags={
