@@ -42,12 +42,12 @@ resource "aws_security_group" "my-security-group" {
         Name= "automate-sg"
     }
 }
-resource "aws_instance" "my_instance1" {
+resource "aws_instance" "my_instance" {
   key_name=aws_key_pair.my_key.key_name
   instance_type=var.ec2-instance-type
   vpc_security_group_ids=[aws_security_group.my-security-group.id]
   ami=var.ec2-ami-id
-
+  user_data = file("install_nginx.sh")
   root_block_device{
     volume_size = var.ec2-rootstorage-size
     volume_type="gp3"
